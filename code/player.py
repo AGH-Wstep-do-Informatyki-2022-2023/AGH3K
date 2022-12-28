@@ -1,4 +1,5 @@
 import pygame
+from spritesheet import SpriteSheet
 from settings import *
 from supp import *
 
@@ -8,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__(group)
 
         self.import_assets()
-        self.status = "idle"
+        self.status = "down"
         self.frame_index = 0
 
         self.image = self.animations[self.status][self.frame_index]
@@ -20,22 +21,29 @@ class Player(pygame.sprite.Sprite):
         self.speed = 200
 
     def import_assets(self):
-        self.animations = {"idle": []}
-        image_surf = pygame.image.load("../graphics/player/idle/0.png").convert_alpha()
-        self.animations["idle"] = [image_surf]
+        asset_rects = [(0, 0, 32, 32), (32, 0, 32, 32), (64, 0, 32, 32), (96, 0, 32, 32)]
+        up_ss = SpriteSheet('graphics/player/Character_Up.png')
+        up_animation = up_ss.images_at(asset_rects)
+        
+        down_ss = SpriteSheet('graphics/player/Character_Down.png')
+        down_animation = down_ss.images_at(asset_rects)
+        
+        left_ss = SpriteSheet('graphics/player/Character_Left.png')
+        left_animation = left_ss.images_at(asset_rects)
+        
+        right_ss = SpriteSheet('graphics/player/Character_Right.png')
+        right_animation = right_ss.images_at(asset_rects)
+        
 
-# Jak sie załatwi assety to, to sie przyda
-#        self.animations = {'up': [], 'down': [], 'left': [], 'right': [],
-#                           'right_idle': [], 'left_idle': [], 'up_idle': [], 'down_idle': [],
-#                           'right_hoe': [], 'left_hoe': [], 'up_hoe': [], 'down_hoe': [],
-#                           'right_axe': [], 'left_axe': [], 'up_axe': [], 'down_axe': [],
-#                           'right_water': [], 'left_water': [], 'up_water': [], 'down_water': []}
-#
+        self.animations = {'up': up_animation, 'down': down_animation, 'left': left_animation, 'right': right_animation}
 
 
-#        for animation in self.animations.keys():
-#            full_path = "../graphic/player/"
-#            self.animations[animation] = import_folder(full_path)
+    def animate(self, dt):
+        self.frame_index += 4 * dt
+        if self.frame_index >= len(self.animations[self.status]):
+            self.frame_index = 0
+            
+        self.image = self.animations[self.status][int(self.frame_index)]
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -68,3 +76,4 @@ class Player(pygame.sprite.Sprite):
     def update(self, dt):
         self.input()
         self.move(dt)
+        self.animate(dt)
