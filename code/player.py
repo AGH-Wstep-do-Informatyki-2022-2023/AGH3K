@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
 
     def import_assets(self):
         self.animations = {"idle": []}
-        image_surf = pygame.image.load("../graphic/player/idle/0.png").convert_alpha()
+        image_surf = pygame.image.load("../graphics/player/idle/0.png").convert_alpha()
         self.animations["idle"] = [image_surf]
 
 # Jak sie załatwi assety to, to sie przyda
