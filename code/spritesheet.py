@@ -12,21 +12,18 @@ class SpriteSheet:
             raise SystemExit(e)
 
 
-    def image_at(self, rectangle, colorkey = None):
+    def image_at(self, rectangle):
         """Load a specific image from a specific rectangle."""
         # Loads image from x, y, x+offset, y+offset.
         rect = pygame.Rect(rectangle)
         image = pygame.Surface(rect.size).convert_alpha()
+        image.fill( (0,0,0,0) )
         image.blit(self.sheet, (0, 0), rect)
-        if colorkey is not None:
-            if colorkey is -1:
-                colorkey = image.get_at((0,0))
-            image.set_colorkey(colorkey, pygame.RLEACCEL)
         return image
 
-    def images_at(self, rects, colorkey = None):
+    def images_at(self, rects):
         """Load a whole bunch of images and return them as a list."""
-        return [self.image_at(rect, colorkey) for rect in rects]
+        return [pygame.transform.scale(self.image_at(rect), (96, 96)) for rect in rects]
 
     def load_strip(self, rect, image_count, colorkey = None):
         """Load a whole strip of images, and return them as a list."""
