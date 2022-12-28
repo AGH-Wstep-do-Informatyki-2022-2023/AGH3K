@@ -15,6 +15,7 @@ class Player(pygame.sprite.Sprite):
 
         self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_rect(center=position)
+        self.z = LAYERS['main']
 
         self.direction = pygame.math.Vector2(0, 0)
         # !
