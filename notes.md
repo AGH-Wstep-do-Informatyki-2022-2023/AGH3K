@@ -7,3 +7,5 @@ nam robić gry nie kazano, wstąpiłem na VS Code
 
 *1:50:50* 
 ᕦ( ͡° ͜ʖ ͡°)ᕤ
+
+okej
