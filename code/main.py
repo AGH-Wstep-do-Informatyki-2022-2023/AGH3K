@@ -18,7 +18,7 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            # !
+            # delta_time
             delta_time = self.clock.tick() / 1000
             self.level.run(delta_time)
             pygame.display.update()
