@@ -5,7 +5,7 @@ from supp import *
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, position, group):
+    def __init__(self, position, group, collision_sprites):
         super().__init__(group)
 
         self.import_assets()
@@ -17,20 +17,21 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=position)
         self.z = LAYERS['main']
 
+        self.hitbox = self.rect.copy().inflate((-7,-7))
+        self.collision_sprites = collision_sprites
+
         self.direction = pygame.math.Vector2(0, 0)
         # !
         self.position = pygame.math.Vector2(self.rect.center)
         self.speed = 200
-
 
     def scale_assets(self, asset_list):
         for i in range(len(asset_list)):
             asset_list[i] = pygame.transform.scale(asset_list[i], (64, 64))
         return asset_list
 
-
     def import_assets(self):
-        asset_rects = [(0, 0, 32, 32), (32, 0, 32, 32), (64, 0, 32, 32), (96, 0, 32, 32)]
+        asset_rects = [(0, 0, 16, 16), (16, 0, 16, 16), (32, 0, 16, 16), (48, 0, 16, 16)]
         up_ss = SpriteSheet('graphics/player/Character_Up.png')
         up_animation = up_ss.images_at(asset_rects)
         
@@ -45,8 +46,6 @@ class Player(pygame.sprite.Sprite):
         
 
         self.animations = {'up': up_animation, 'down': down_animation, 'left': left_animation, 'right': right_animation}
-
-
 
     def animate(self, dt):
         if not self.idle:
@@ -84,15 +83,30 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
+    def collision(self, direction):
+        for sprite in self.collision_sprites.sprites():
+            if hasattr(sprite, "hitbox"):
+                if sprite.hitbox.colliderect(self.hitbox):
+                    if direction == "horizontal":
+                        if self.direction.x > 0:
+                            self.hitbox.right = sprite.hitbox.left
+                        if self.direction.x < 0:
+                            self.hitbox.left = sprite.hitbox.right
+                        self.rect.centerx = self.hitbox.centerx
+                        self.position.x = self.hitbox.centerx
+
     def move(self, dt):
         if self.direction.magnitude() > 0:
             self.direction = self.direction.normalize()
 
         self.position.x += self.direction.x*self.speed*dt
-        self.rect.center = self.position
+        self.hitbox.centerx = round(self.position.x)
+        self.rect.centerx = self.hitbox.centerx
+        self.collision("horizontal")
 
         self.position.y += self.direction.y*self.speed*dt
-        self.rect.center = self.position
+        self.hitbox.centery = round(self.position.y)
+        self.rect.centery = self.hitbox.centery
 
     def update(self, dt):
         self.input()
