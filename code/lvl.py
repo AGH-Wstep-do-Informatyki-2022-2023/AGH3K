@@ -17,8 +17,11 @@ class Level:
         for x, y, surf in tmx_data.get_layer_by_name("sea").tiles():
             Generic((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites], LAYERS["water"])
 
-        for obj in tmx_data.get_layer_by_name("trees"):
-            Tree((obj.x, obj.y), pygame.transform.scale(obj.image, (obj.width * 2, obj.height * 2)), [self.all_sprites, self.collision_sprites], obj.name)
+        for obj in tmx_data.get_layer_by_name("tree_top"):
+            Tree_Top((obj.x, obj.y), pygame.transform.scale(obj.image, (obj.width * 2, obj.height * 2)), [self.all_sprites, self.collision_sprites], LAYERS["house top"], obj.name)
+
+        for obj in tmx_data.get_layer_by_name("tree_bottom"):
+            Tree_Bottom((obj.x, obj.y), pygame.transform.scale(obj.image, (obj.width * 2, obj.height * 2)), [self.all_sprites, self.collision_sprites], LAYERS["main"], obj.name)
 
         Generic(pos = (0,0), surf = pygame.transform.scale_by(pygame.image.load('graphics/world/ground48.png').convert_alpha(), (2, 2)), groups = self.all_sprites, z = LAYERS['ground'])
         self.player = Player((640, 360), self.all_sprites, self.collision_sprites)

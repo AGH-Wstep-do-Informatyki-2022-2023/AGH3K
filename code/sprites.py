@@ -10,5 +10,18 @@ class Generic(pygame.sprite.Sprite):
         self.hitbox = self.rect.copy().inflate((-self.rect.width * 0.2,-self.rect.height * 0.2))
 
 class Tree(Generic):
-    def __init__(self, pos, surf, groups, name):
-        super().__init__(pos, surf, groups)
+    def __init__(self, pos, surf, groups, z, name):
+        super().__init__(pos, surf, groups, z)
+        self.hitbox = self.rect.copy().inflate((-self.rect.width * 0.7,-self.rect.height * 0.3))
+
+class Tree_Top(Tree):
+    def __init__(self, pos, surf, groups, z, name):
+        super().__init__(pos, surf, groups, z, name)
+        self.hitbox = self.rect.copy().inflate((-self.rect.width * 0.99,-self.rect.height * 0.99))
+        
+class Tree_Bottom(Tree):
+    def __init__(self, pos, surf, groups, z, name):
+        super().__init__(pos, surf, groups, z, name)
+        self.hitbox = self.rect.copy().inflate((-self.rect.width * 0.7,-self.rect.height * 0.2))
+
+

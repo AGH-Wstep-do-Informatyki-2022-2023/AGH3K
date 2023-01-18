@@ -94,6 +94,15 @@ class Player(pygame.sprite.Sprite):
                             self.hitbox.left = sprite.hitbox.right
                         self.rect.centerx = self.hitbox.centerx
                         self.position.x = self.hitbox.centerx
+                    if direction == "vertical":
+                        if self.direction.y > 0:
+                            self.hitbox.bottom = sprite.hitbox.top
+                        if self.direction.y < 0:
+                            self.hitbox.top = sprite.hitbox.bottom
+                        self.rect.centery = self.hitbox.centery
+                        self.position.y = self.hitbox.centery
+                        
+
 
     def move(self, dt):
         if self.direction.magnitude() > 0:
@@ -107,6 +116,7 @@ class Player(pygame.sprite.Sprite):
         self.position.y += self.direction.y*self.speed*dt
         self.hitbox.centery = round(self.position.y)
         self.rect.centery = self.hitbox.centery
+        self.collision("vertical")
 
     def update(self, dt):
         self.input()
