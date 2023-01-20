@@ -47,7 +47,6 @@ class Player(pygame.sprite.Sprite):
         self.animations = {'up': up_animation, 'down': down_animation, 'left': left_animation, 'right': right_animation}
 
 
-
     def animate(self, dt):
         if not self.idle:
             self.frame_index += 4 * dt
