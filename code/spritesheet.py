@@ -23,7 +23,7 @@ class SpriteSheet:
 
     def images_at(self, rects):
         """Load a whole bunch of images and return them as a list."""
-        return [pygame.transform.scale(self.image_at(rect), (128, 128)) for rect in rects]
+        return [pygame.transform.scale(self.image_at(rect), (48, 48)) for rect in rects]
 
     def load_strip(self, rect, image_count, colorkey = None):
         """Load a whole strip of images, and return them as a list."""
